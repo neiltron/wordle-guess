@@ -5,7 +5,7 @@ document.getElementById('submit').addEventListener('click', async (e) => {
 
     const userInput = document.getElementById('userInput').value
     try {
-        const response = await fetch('http://127.0.0.1:5000/predict', {
+        const response = await fetch(`http://${window.location.hostname}:5001/predict`, {
             method: 'POST',
             body: userInput
         })

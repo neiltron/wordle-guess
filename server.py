@@ -5,30 +5,30 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime, timedelta
 
-CACHE_DIR = './cache'
+CACHE_DIR = './data/cache'
 wordle_dictionary = set()
 word_frequencies = {}
 first_word_frequencies = {}
 
-with open("./wordle-dictionary.txt", "r") as f:
+with open("./data/wordle-dictionary.txt", "r") as f:
   total_words = sum(1 for _ in f)
 
-with open("./wordle-dictionary.txt", "r") as f:
+with open("./data/wordle-dictionary.txt", "r") as f:
   for idx, line in enumerate(f):
     word = line.strip()
     normalized_frequency = 1 - (idx / total_words)
     word_frequencies[word] = normalized_frequency
 
-with open("./wordle-dictionary-first-word-frequency.txt", "r") as f:
+with open("./data/wordle-dictionary-first-word-frequency.txt", "r") as f:
   total_words = sum(1 for _ in f)
 
-with open("./wordle-dictionary-first-word-frequency.txt", "r") as f:
+with open("./data/wordle-dictionary-first-word-frequency.txt", "r") as f:
   for idx, line in enumerate(f):
     word = line.strip()
     normalized_frequency = 1 - (idx / total_words)
     first_word_frequencies[word] = normalized_frequency
 
-with open("./wordle-dictionary.txt", "r") as f:
+with open("./data/wordle-dictionary.txt", "r") as f:
     for line in f:
         wordle_dictionary.add(line.strip())
 
@@ -42,15 +42,7 @@ def process_user_input(user_input):
     start_date = datetime(2023, 10, 2)
     target_date = start_date + timedelta(days=wordle_num - 835)
     
-    # Convert the squares to fit existing format
-    square_translations = {
-        "⬛": "⬛",
-        "🟩": "🟩",
-        "🟨": "🟨",
-        "🟧": "🟧",
-        "🟥": "🟥"
-    }
-    squares = [list(map(square_translations.get, list(line))) for line in lines[1:]]
+    squares = [list(line) for line in lines[1:]]
     
     return target_date, squares
 
@@ -117,7 +109,7 @@ def probable_first_guesses_with_all_guesses(correct_word, all_guesses):
             word_scores[word] += score_word(word, guess, correct_word)
 
     sorted_word_scores = sorted(word_scores.items(), key=lambda x: x[1], reverse=True)
-    return sorted_word_scores  # Return the list of tuples, not just the words
+    return sorted_word_scores
 
 
 app = Flask(__name__)
@@ -147,4 +139,4 @@ def predict():
   return response
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5001)
