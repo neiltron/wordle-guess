@@ -6,3 +6,5 @@ This process is based on probability working backwards from the answer. A score 
 - The color of blocks in each guess, eliminating or down-ranking certain words that are more or less likely.
 - The frequency of use in English (based on a [Wortschatz](https://wortschatz.uni-leipzig.de/en/download/English) dataset)
 - Frequency of use in Wordle [starting guesses](https://www.nytimes.com/interactive/2022/upshot/wordle-bot.html).
+
+![screenshot](./data/screenshot.png)
