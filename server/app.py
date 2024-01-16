@@ -3,7 +3,7 @@ from flask_cors import CORS
 from datetime import datetime, timedelta
 
 from data_loader import initialize_data
-from scoring import probable_first_guesses_with_all_guesses
+from scoring import enhanced_probable_first_guesses
 from nyt_fetch import fetch_wordle_solution
 
 
@@ -43,12 +43,12 @@ def predict():
   except ValueError as e:
     return jsonify({'error': str(e)}), 400
 
-  top_probable_first_guesses = probable_first_guesses_with_all_guesses(correct_word, all_guesses_test)
+  top_probable_first_guesses = enhanced_probable_first_guesses(correct_word, all_guesses_test)
 
   response = jsonify({
     # 'correct_word': correct_word,
     'target_date': target_date.strftime('%Y-%m-%d'),
-    'top_probable_first_guesses': top_probable_first_guesses[:50]
+    'top_probable_first_guesses': top_probable_first_guesses[:500]
   })
   
   response.headers.add('Access-Control-Allow-Origin', '*')
